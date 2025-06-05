@@ -13,7 +13,7 @@ st.set_page_config(page_title="Dashboard - Ames Housing", layout="wide")
 # Logo da UnB + título e subtítulo
 col_logo, col_title = st.columns([1, 8])
 with col_logo:
-    st.image("image (1).png", width=100)
+    st.image("Image (1).png", width=100)
 with col_title:
     st.markdown("## Dashboard Interativo de Regressão e ANOVA - Ames Housing (com base embutida)")
     st.markdown("### Alunos: Juliano Teles Abrahao (231013411) - João Pedro Lima de Carvalho (231013402)")
