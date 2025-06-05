@@ -33,7 +33,9 @@ col1, col2 = st.columns(2)
 with col1:
     x_var = st.selectbox("Selecione a variável X (numérica)", df.select_dtypes(include=np.number).columns)
 with col2:
-    y_var = st.selectbox("Selecione a variável Y", df.select_dtypes(include=np.number).columns, index=65)  # SalePrice default
+    numericas = df.select_dtypes(include=np.number).columns
+default_y = "SalePrice" if "SalePrice" in numericas else numericas[0]
+y_var = st.selectbox("Selecione a variável Y", numericas, index=list(numericas).index(default_y))
 
 fig = px.scatter(df, x=x_var, y=y_var, trendline="ols", title=f"{y_var} vs {x_var}")
 st.plotly_chart(fig, use_container_width=True)
