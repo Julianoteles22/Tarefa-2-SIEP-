@@ -42,7 +42,13 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.subheader("🔬 ANOVA")
 cat_var = st.selectbox("Selecione uma variável categórica para ANOVA", df.select_dtypes(include='object').columns)
-model_anova = ols(f'{y_var} ~ C({cat_var})', data=df).fit()
+from patsy import dmatrices
+
+# Garante nomes válidos e evita SyntaxError
+safe_cat = cat_var.replace(" ", "_").replace("-", "_")
+df = df.rename(columns={cat_var: safe_cat})
+model_anova = ols(f'{y_var} ~ C({safe_cat})', data=df).fit()
+
 anova_table = sm.stats.anova_lm(model_anova, typ=2)
 st.write("Tabela ANOVA:")
 st.dataframe(anova_table)
