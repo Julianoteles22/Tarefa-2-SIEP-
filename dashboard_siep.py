@@ -47,15 +47,16 @@ from patsy import dmatrices
 # Garante nomes válidos e evita SyntaxError
 safe_cat = cat_var.replace(" ", "_").replace("-", "_")
 df = df.rename(columns={cat_var: safe_cat})
-model_anova = ols(f'{y_var} ~ C({safe_cat})', data=df).fit()
+safe_cat = cat_var.replace(" ", "_").replace("-", "_")
+df = df.rename(columns={cat_var: safe_cat})
 
+model_anova = ols(f'{y_var} ~ C({safe_cat})', data=df).fit()
 anova_table = sm.stats.anova_lm(model_anova, typ=2)
-st.write("Tabela ANOVA:")
 st.dataframe(anova_table)
 
 residuals = model_anova.resid
 st.write("Teste de normalidade (Shapiro-Wilk):", stats.shapiro(residuals))
-grouped = [df[y_var][df[cat_var] == cat] for cat in df[cat_var].dropna().unique()]
+grouped = [df[y_var][df[safe_cat] == cat] for cat in df[safe_cat].dropna().unique()]
 st.write("Teste de homocedasticidade (Levene):", stats.levene(*grouped))
 
 st.subheader("📉 Regressão Linear Múltipla")
